@@ -9,13 +9,11 @@ phases:
     commands:
       - echo "Logando no ECR..."
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
-
   build:
     commands:
       - echo "Buildando imagem..."
       - docker build -t meu-site .
       - docker tag meu-site:latest $REPOSITORY_URI:latest
-
   post_build:
     commands:
       - echo "Enviando imagem..."
@@ -24,16 +22,5 @@ phases:
       - printf '[{"name":"meu-site","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
 
 artifacts:
-  files:
-    - imagedefinitions.json
-
-      post_build:
-  commands:
-    - echo "Enviando imagem para o ECR..."
-    - docker push $REPOSITORY_URI:latest
-    - echo "Gerando imagedefinitions.json..."
-    - printf '[{"name":"meu-site","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
-
-      artifacts:
   files:
     - imagedefinitions.json

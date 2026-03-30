@@ -32,7 +32,7 @@ artifacts:
     - echo "Enviando imagem para o ECR..."
     - docker push $REPOSITORY_URI:latest
     - echo "Gerando imagedefinitions.json..."
-    - printf '[{"name":"cluster-meu-sitee","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
+    - printf '[{"name":"meu-site","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
 
       artifacts:
   files:

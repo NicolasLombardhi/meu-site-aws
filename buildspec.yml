@@ -26,3 +26,14 @@ phases:
 artifacts:
   files:
     - imagedefinitions.json
+
+      post_build:
+  commands:
+    - echo "Enviando imagem para o ECR..."
+    - docker push $REPOSITORY_URI:latest
+    - echo "Gerando imagedefinitions.json..."
+    - printf '[{"name":"cluster-meu-sitee","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
+
+      artifacts:
+  files:
+    - imagedefinitions.json

@@ -12,7 +12,7 @@ phases:
 
   build:
     commands:
-      - echo "Buildando imagem Docker..."
+      - echo "Buildando imagem..."
       - docker build -t meu-site .
       - docker tag meu-site:latest $REPOSITORY_URI:latest
 
@@ -20,6 +20,9 @@ phases:
     commands:
       - echo "Enviando imagem..."
       - docker push $REPOSITORY_URI:latest
+      - echo "Gerando imagedefinitions.json..."
+      - printf '[{"name":"meu-site","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
 
 artifacts:
-  files: '**/*'
+  files:
+    - imagedefinitions.json

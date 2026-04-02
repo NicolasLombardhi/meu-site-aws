@@ -37,7 +37,7 @@ phases:
       - docker push $REPOSITORY_URI:latest
 
       - echo "Gerando imagedefinitions.json..."
-      - printf '[{"name":"meu-site","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
+      - printf '[{"name":"html","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
 
 artifacts:
   files:

@@ -7,17 +7,35 @@ env:
 phases:
   pre_build:
     commands:
+      - echo "Debug ambiente"
+      - aws --version
+      - docker --version
+
       - echo "Logando no ECR..."
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $(echo $REPOSITORY_URI | cut -d'/' -f1)
+
   build:
     commands:
+
+      - echo "Listando arquivos..."
+      - ls -la
       - echo "Buildando imagem..."
       - docker build -t meu-site .
+
+      - echo "Listando arquivos..."
+      - ls -la
+
+      - echo "Buildando imagem..."
+      - docker build -t meu-site .
+
+      - echo "Tagando imagem..."
       - docker tag meu-site:latest $REPOSITORY_URI:latest
+
   post_build:
     commands:
       - echo "Enviando imagem..."
       - docker push $REPOSITORY_URI:latest
+
       - echo "Gerando imagedefinitions.json..."
       - printf '[{"name":"meu-site","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
 
